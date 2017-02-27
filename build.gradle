@@ -1,0 +1,38 @@
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+
+tasks.withType(JavaCompile) {
+   options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+   options.encoding = 'UTF-8'
+}
+
+javadoc {
+   options.charSet = 'UTF-8'
+}
+
+eclipse {
+  jdt {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies{
+  compile 'org.slf4j:slf4j-log4j12:1.6.3'
+  compile 'com.google.code.gson:gson:2.3'
+  providedCompile 'org.apache.tomcat:tomcat-catalina:7.0.42'
+  compile 'com.sun.jersey:jersey-json:1.9'
+  compile 'com.sun.jersey:jersey-server:1.9'
+  compile 'org.apache.httpcomponents:httpclient:4.3'
+  compile 'com.google.code.gson:gson:2.8.0'
+}
