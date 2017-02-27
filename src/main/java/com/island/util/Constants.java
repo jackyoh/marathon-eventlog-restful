@@ -6,4 +6,5 @@ public class Constants {
 	public static String TASKSTATUS = "taskStatus";
 	public static String REPLACEJSONDATASTR = "data: ";
 	public static String STATUSCACHE = "statusCache";
+	public static String MARATHON_RESTFUL_EVENTLOG_URL = "MARATHON_RESTFUL_EVENTLOG_URL";
 }

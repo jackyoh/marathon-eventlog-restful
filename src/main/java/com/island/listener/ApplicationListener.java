@@ -17,12 +17,16 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import com.google.gson.Gson;
 import com.island.bean.StatusBean;
 import com.island.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApplicationListener implements ServletContextListener{
-
+	private static Logger LOGGER = LoggerFactory.getLogger(ApplicationListener.class);
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		String marathonRestfulURL = System.getenv("MARATHON_RESTFUL_EVENTLOG_URL");
+		LOGGER.info("ApplicationListener context initialized");
+		String marathonRestfulURL = System.getenv(Constants.MARATHON_RESTFUL_EVENTLOG_URL);
+		LOGGER.info("Marathon Restful URL is:" + marathonRestfulURL);
 		if(marathonRestfulURL == null || marathonRestfulURL.equals("")){
 			throw new RuntimeException("Please set MARATHON_RESTFUL_EVENTLOG_URL environment variable.");
 			//example:
@@ -44,10 +48,11 @@ public class ApplicationListener implements ServletContextListener{
 }
 
 class MarathonEventLogRestfulThread implements Runnable {
-
+	private static Logger LOGGER = LoggerFactory.getLogger(MarathonEventLogRestfulThread.class);
 	private ServletContext context;
 	private String marathonRestfulURL;
 	private Map<String, StatusBean> statusMaps;
+	
 	
 	public MarathonEventLogRestfulThread(ServletContext context, 
 			                               String marathonRestfulURL, 
@@ -82,6 +87,7 @@ class MarathonEventLogRestfulThread implements Runnable {
 				}
 			  
 		  }catch(Exception e){
+			  LOGGER.error("Please check your Marathon Framework Restful service!");
 			  throw new RuntimeException(e);
 		  }
 		
