@@ -1,6 +1,6 @@
 package com.island.bean;
 
-public class StatusBean {
+public class TaskInfoBean {
 	private String slaveId;
 	private String taskStatus;
 	private String message;

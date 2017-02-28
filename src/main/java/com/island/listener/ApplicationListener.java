@@ -15,7 +15,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.google.gson.Gson;
-import com.island.bean.StatusBean;
+import com.island.bean.TaskInfoBean;
 import com.island.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +32,13 @@ public class ApplicationListener implements ServletContextListener{
 			//example:
 			//export MARATHON_RESTFUL_EVENTLOG_URL=http://192.168.1.8:8080/v2/events
 		}
-		Map<String, StatusBean> statusMaps = new HashMap<String, StatusBean>();
-		MarathonEventLogRestfulThread thread = new MarathonEventLogRestfulThread(
+		Map<String, TaskInfoBean> statusMaps = new HashMap<String, TaskInfoBean>();
+		MarathonEventLogRestfulThread marathonThread = new MarathonEventLogRestfulThread(
 																    sce.getServletContext(),
 				                                        marathonRestfulURL,
-				                                        statusMaps);
-		thread.run();
+			                                           statusMaps);
+		Thread thread = new Thread(marathonThread);
+		thread.start();
 	}
 
 	@Override
@@ -51,12 +52,12 @@ class MarathonEventLogRestfulThread implements Runnable {
 	private static Logger LOGGER = LoggerFactory.getLogger(MarathonEventLogRestfulThread.class);
 	private ServletContext context;
 	private String marathonRestfulURL;
-	private Map<String, StatusBean> statusMaps;
+	private Map<String, TaskInfoBean> statusMaps;
 	
 	
 	public MarathonEventLogRestfulThread(ServletContext context, 
 			                               String marathonRestfulURL, 
-			                               Map<String, StatusBean> statusMaps){
+			                               Map<String, TaskInfoBean> statusMaps){
 		this.context = context;
 		this.marathonRestfulURL = marathonRestfulURL;
 		this.statusMaps = statusMaps;
@@ -79,8 +80,8 @@ class MarathonEventLogRestfulThread implements Runnable {
 					if(line.contains(Constants.TASKSTATUS)){
 						line = line.replace(Constants.REPLACEJSONDATASTR, "");
 						Gson gson = new Gson();
-						StatusBean statusBean = gson.fromJson(line, StatusBean.class);
-												
+						TaskInfoBean statusBean = gson.fromJson(line, TaskInfoBean.class);
+						LOGGER.info("status:" + statusBean.getAppId() + ", " + statusBean.getTaskStatus());						
 						statusMaps.put(statusBean.getAppId(), statusBean);
 						this.context.setAttribute(Constants.STATUSCACHE, statusMaps);
 					}
@@ -90,7 +91,5 @@ class MarathonEventLogRestfulThread implements Runnable {
 			  LOGGER.error("Please check your Marathon Framework Restful service!");
 			  throw new RuntimeException(e);
 		  }
-		
 	}
-	
 }
