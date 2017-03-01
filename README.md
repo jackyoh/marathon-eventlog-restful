@@ -17,6 +17,6 @@ http://192.168.1.223:8090/marathon-eventlog-restful/webapi/v2/apps
 
 # REST API
 * [GET /webapi/v2/apps] :List all application on Marathon framework
-* [GET /webapi/v2/apps/{appId}] :Query application information
+* [GET /webapi/v2/apps/{appId}] :Query application information on Marathon framework
 * [GET /webapi/v2/taskstatus] :List all application status on Marathon framework
-* [GET /webapi/v2/taskstatus/{appId}] :Query application status
+* [GET /webapi/v2/taskstatus/{appId}] :Query application status on Marathon framework
