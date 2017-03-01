@@ -1,7 +1,7 @@
 # Install
 Download Source code command
 ```
-#git clone https://github.com/jackyoh/marathon-eventlog-restful.git
+# git clone https://github.com/jackyoh/marathon-eventlog-restful.git
 ```
 Build docker image command
 ```
