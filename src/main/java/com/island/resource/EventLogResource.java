@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.island.bean.TaskInfoBean;
 import com.island.util.Constants;
 
@@ -32,10 +33,10 @@ public class EventLogResource {
 		LOGGER.info("List application");
 		Map<String, TaskInfoBean> statusCache = 
                 (Map<String, TaskInfoBean>) context.getAttribute(Constants.STATUSCACHE);
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().serializeNulls().create();
 		if(statusCache == null){
 			LOGGER.info("Not application in the list");
-			return "";
+			return gson.toJson(statusCache);
 		}
 		return gson.toJson(statusCache, Map.class);
 	}
@@ -47,16 +48,16 @@ public class EventLogResource {
 		Map<String, TaskInfoBean> statusCache = 
                 (Map<String, TaskInfoBean>) context.getAttribute(Constants.STATUSCACHE);
 		LOGGER.info("Query " + appId + " application");
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().serializeNulls().create();
 		
 		if(statusCache == null){
 			LOGGER.info("Not application in the list");
-			return "";
+			return gson.toJson(statusCache);
 		}
 		TaskInfoBean taskStatus = statusCache.get("/" + appId);
 		if(taskStatus == null){
 			LOGGER.info(appId + " application is not found");
-			return "";
+			return gson.toJson(taskStatus);
 		}
 		return gson.toJson(taskStatus, TaskInfoBean.class);
 	}
@@ -69,11 +70,11 @@ public class EventLogResource {
 		Map<String, TaskInfoBean> statusCache = 
                 (Map<String, TaskInfoBean>) context.getAttribute(Constants.STATUSCACHE);
 		
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().serializeNulls().create();
 		
 		if(statusCache == null){
 			LOGGER.info("Not application in the list");
-			return "";
+			return gson.toJson(statusCache);
 		}
 		Map<String, String> maps = new HashMap<String, String>();
 		for(Entry<String, TaskInfoBean> entry : statusCache.entrySet()){
@@ -90,17 +91,17 @@ public class EventLogResource {
 		Map<String, TaskInfoBean> statusCache = 
                 (Map<String, TaskInfoBean>) context.getAttribute(Constants.STATUSCACHE);
 		
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().serializeNulls().create();
 		
 		if(statusCache == null){
 			LOGGER.info("Not application in the list");
-			return "";
+			return gson.toJson(statusCache);
 		}
 		
 		TaskInfoBean taskStatus = statusCache.get("/" + appId);
 		if(taskStatus == null){
 			LOGGER.info(appId + " application status is not found");
-			return "";
+			return gson.toJson(taskStatus);
 		}
 		return gson.toJson(taskStatus.getTaskStatus(), String.class);
 	}
