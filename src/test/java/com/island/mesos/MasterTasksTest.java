@@ -17,7 +17,7 @@ import com.island.bean.MesosMasterTaskInfo;
 import com.island.bean.MesosMasterTaskInfoList;
 
 public class MasterTasksTest {
-	public static String mesosMasterTaskURL = "http://192.168.1.223:5050/master/tasks?order=desc";
+	public static String mesosMasterTaskURL = "http://192.168.1.211:5050/master/tasks?limit=1000";
 	
 	@Test
 	public void testJSONtoOBJECT() throws Exception{
@@ -40,7 +40,8 @@ public class MasterTasksTest {
 	}
 	
 	@Test
-	public void teststatisticTaskHost() throws Exception{
+	public void testStatisticTaskHost() throws Exception{
+		String mesosMasterTaskURL = "http://192.168.1.211:5050/master/tasks?limit=1000";
 		Map<String, Integer> maps = new HashMap<String, Integer>();
 		
 		HttpClient client = HttpClientBuilder.create().build();
@@ -59,9 +60,10 @@ public class MasterTasksTest {
 		for(MesosMasterTaskInfo task : result.getTasks()){
 			Integer count = maps.get(task.getSlave_id());
 			if(count == null){
-				count = 0;
+				maps.put(task.getSlave_id(), 0);
+			}else{
+				maps.put(task.getSlave_id(), count + 1);
 			}
-			maps.put(task.getSlave_id(), count + 1);
 		}
 		for(Entry<String, Integer> entry : maps.entrySet()){
 			System.out.println(entry.getKey() + "    " + entry.getValue());

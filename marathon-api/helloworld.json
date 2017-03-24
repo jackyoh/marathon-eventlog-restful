@@ -1,5 +1,0 @@
-{
-  "id": "helloworld",
-  "cmd": "echo 'Hello World!'",
-  "instances": 1
-}

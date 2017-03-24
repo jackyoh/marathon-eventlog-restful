@@ -45,6 +45,7 @@ public class ApplicationListener implements ServletContextListener{
 	public void contextDestroyed(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
         context.removeAttribute(Constants.STATUSCACHE);
+        System.out.println("SHUTDOWN TEST");
 	}
 }
 
@@ -77,6 +78,7 @@ class MarathonEventLogRestfulThread implements Runnable {
 
 				String line = "";
 				while ((line = rd.readLine()) != null) {
+					LOGGER.info("RUNNING");
 					if(line.contains(Constants.TASKSTATUS)){
 						line = line.replace(Constants.REPLACEJSONDATASTR, "");
 						Gson gson = new Gson();
@@ -86,7 +88,7 @@ class MarathonEventLogRestfulThread implements Runnable {
 						this.context.setAttribute(Constants.STATUSCACHE, statusMaps);
 					}
 				}
-			  
+			    LOGGER.info("SHUTDOWN");
 		  }catch(Exception e){
 			  LOGGER.error("Please check your Marathon Framework Restful service!");
 			  throw new RuntimeException(e);
