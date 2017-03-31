@@ -13,5 +13,5 @@ EOF
 
 for((i=1;i<=15;i++))
 do
-   curl -H "Content-Type: application/json" -X POST -d "$(generate_post_data helloworld${i})" http://192.168.1.211:8080/v2/apps
+   curl -H "Content-Type: application/json" -X POST -d "$(generate_post_data hello${i})" http://192.168.1.211:8080/v2/apps
 done
